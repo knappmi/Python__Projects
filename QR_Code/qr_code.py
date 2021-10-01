@@ -1,4 +1,6 @@
 import qrcode
 
-img = qrcode.make("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+
+url = input("insert url here")
+img = qrcode.make(url)
 img.save("LookAtMeQR.jpg")
