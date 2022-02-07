@@ -1,0 +1,10 @@
+---
+global:
+    data:
+        domain: global.local
+        asn: 1
+
+test:
+    data:
+        domain: test.local
+        asn: 15
