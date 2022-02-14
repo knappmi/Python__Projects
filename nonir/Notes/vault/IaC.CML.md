@@ -2,7 +2,7 @@
 id: fVxbyNVkcymgyk9yib3BT
 title: CML
 desc: ''
-updated: 1644804288064
+updated: 1644807438318
 created: 1644771587177
 ---
 
@@ -18,17 +18,18 @@ created: 1644771587177
 
 ## Setting Up CML
 
-When setting up CML you will need the Reference Platform ISO (refplat) and the Controller OVA for the VM.
+* When setting up CML you will need the Reference Platform ISO (refplat) and the Controller OVA for the VM.
 
-The Controller ova will contain CML and the ISO will allow labs to be built.
+* The Controller ova will contain CML and the ISO will allow labs to be built.
 
 **Heres a step-by-step deployment guide:**
 
 [ Steps and requirements for deploying CML ](https://developer.cisco.com/docs/modeling-labs/#!deploying-the-ova-file-on-vmware-workstation-fusion)
 
 Local CML Creds:
-
-admin P@ssw0rd12
+```text
+admin / P@ssw0rd12
+```
 
 ## Troubleshooting:
 - Make sure VM has access to internet. I bridged my connection
@@ -56,7 +57,7 @@ admin P@ssw0rd12
     - **Lab Notes:** NOTES! And yes, it's in MARKDOWN!
 
 - **Breakout**
-    The breakout tool is what allows us to reach out programmatically to devices within the lab. It will take the ip where the breakout executable exsists and attaches a different port depedning on the device.
+    The breakout tool is what allows us to reach out programmatically to devices within the lab. It will take the ip where the breakout executable exsists and attaches a different port depending on the device.
     
     The breakout tool allows you to use putty, SecureCRT, blah blah blah. But we want it for Ansible and Python!
 
@@ -83,3 +84,11 @@ admin P@ssw0rd12
     sh = net_connect.send_command(cmd)
     print(sh)
     ```
+    ### Heres the Breakout Labs Screen:
+    ![ Breakout Labs ](assets/images/BreakoutLabs.png)
+    
+    ### The Breakout Labs Nodes page:
+    ![ Breakout Labs ](assets/images/BreakoutNodes.png)
+
+    ### The configuration screen:
+    ![ Breakout Labs ](assets/images/BreakoutConfig.png)
