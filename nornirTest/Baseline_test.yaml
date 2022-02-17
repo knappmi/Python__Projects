@@ -1,0 +1,1995 @@
+lab:
+  description: ''
+  notes: ''
+  timestamp: 1644781754.4722111
+  title: 'Baseline_test'
+  version: 0.0.4
+nodes:
+  - id: n1
+    label: test-csr
+    node_definition: csr1000v
+    x: -550
+    y: -100
+    configuration: |-
+      !
+      platform console serial
+      platform qos match-statistics per-filter
+      platform qos match-statistics per-ace
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      service password-encryption
+      !
+      hostname B-KL001-H-R
+      !
+      call-home
+      profile ciscoTAC-1
+      no active
+      !
+      !
+      license smart reservation
+      !
+      logging buffered 16384
+      no logging console
+      logging monitor 5	   
+      !
+      aaa new-model
+      aaa group server tacacs+ ISESERVERS
+      server name JTF06-PSN-01
+      server name JTF03-PSN-01
+      ip tacacs source-interface BDI10
+      !
+      !
+      aaa authentication login default group ISESERVERS local
+      aaa authentication enable default enable group ISESERVERS
+      aaa authorization console
+      aaa authorization config-commands
+      aaa authorization exec default group ISESERVERS local if-authenticated 
+      aaa authorization commands 5 default group ISESERVERS local 
+      aaa authorization commands 15 default group ISESERVERS local 
+      aaa authorization network default group ISESERVERS local 
+      aaa accounting exec default start-stop group ISESERVERS
+      aaa accounting commands 5 default start-stop group ISESERVERS
+      aaa accounting commands 15 default start-stop group ISESERVERS
+      aaa accounting network default start-stop group ISESERVERS
+      !
+      aaa session-id common 
+      !
+      ip scp server enable
+      !
+      multilink bundle-name authenticated
+      !
+      aaa session-id common
+      clock timezone UTC 0 0 
+      !
+      ip vrf ISP
+      !
+      ip vrf JDI
+      !
+      ip vrf JMO
+      !
+      ip vrf CIS
+      !
+      ip vrf MGMT
+      !
+      !
+      ip multicast-routing distributed
+      !
+      no ip domain lookup
+      ip domain name painheals.net
+      ip dhcp support tunnel unicast
+      ip dhcp excluded-address vrf MGMT 10.211.211.1
+      ip dhcp excluded-address vrf MGMT 10.211.211.6
+      ip dhcp excluded-address vrf JDI 10.236.96.6
+      ip dhcp excluded-address vrf JDI 10.236.120.6
+      ip dhcp excluded-address vrf ISP 10.252.180.6
+      !
+      ip dhcp pool JDI_DATA
+      vrf JDI
+      dns-server 10.1.230.1 10.1.230.2 10.15.224.10 10.28.224.10
+      domain-name sof.socds.mil
+      network 10.236.96.0 255.255.255.248
+      default-router 10.236.96.6
+      !
+      ip dhcp pool JDI_VOICE
+      vrf JDI
+      dns-server 10.100.150.203 10.100.150.208
+      option 150 ip 10.101.254.129 10.101.254.130 10.100.201.241 10.100.201.242
+      domain-name hq.jdi.army.mil
+      network 10.236.120.0 255.255.255.248
+      default-router 10.236.120.6
+      !
+      ip dhcp pool VRF_MGMT
+      vrf MGMT
+      network 10.211.211.0 255.255.255.248
+      !
+      ip dhcp pool ISP
+      vrf ISP
+      dns-server 8.8.4.4 8.8.8.8 10.254.127.1 10.254.127.2
+      network 10.252.180.0 255.255.255.248
+      default-router 10.252.180.6
+      !
+      !
+      no ip igmp snooping
+      login on-success log
+      !
+      !
+      key chain Jbn-Wan
+      key 22
+        key-string 7 094A5C5D1C2A3D210155330011310536212E1C54230902406E0E
+        accept-lifetime 00:01:00 Sep 1 2021 01:00:00 Mar 1 2022
+        send-lifetime 00:01:00 Sep 1 2021 01:00:00 Mar 1 2022
+      key 23
+        key-string 7 125A5C5C593E03061C793506001504331644360B7640794A71
+        accept-lifetime 00:01:00 Mar 1 2022 01:00:00 Sep 1 2022
+        send-lifetime 00:01:00 Mar 1 2022 01:00:00 Sep 1 2022
+      key 24
+        key-string 7 045008495D0F5F4746302B153559150F392937713E3B20410E
+        accept-lifetime 00:01:00 Sep 1 2022 01:00:00 Mar 1 2023
+        send-lifetime 00:01:00 Sep 1 2022 01:00:00 Mar 1 2023
+      key 9987
+        key-string 7 075B6A195E0C03463526484F0D733A6B08602F04112E114017
+        accept-lifetime 00:01:00 Mar 1 2023 infinite
+        send-lifetime 00:01:00 Mar 1 2023 infinite
+      key 9988
+        key-string 7 044C000A3D22417B2E4A034F2759191020057625191A183C0C37
+        accept-lifetime 00:01:00 Mar 1 2022 infinite
+        send-lifetime 00:01:00 Mar 1 2022 infinite
+      !
+      key chain Jdi-Wan
+      key 21
+        key-string 7 080A1B67231206223F581D5D212F2738276310023D270F2F66
+        accept-lifetime 00:01:00 Sep 1 2021 01:00:00 Mar 1 2022
+        send-lifetime 00:01:00 Sep 1 2021 01:00:00 Mar 1 2022
+      key 22
+        key-string 7 040328371703156A2935571608534A1D107E356E033332024C
+        accept-lifetime 00:01:00 Mar 1 2022 01:00:00 Sep 1 2022
+        send-lifetime 00:01:00 Mar 1 2022 01:00:00 Sep 1 2022
+      key 23
+        key-string 7 034F7124305D3856691C560043222501242C03320C2A3D3758
+        accept-lifetime 00:01:00 Sep 1 2022 01:00:00 Mar 1 2023
+        send-lifetime 00:01:00 Sep 1 2022 01:00:00 Mar 1 2023
+      key 9988
+        key-string 7 10450328261B4B3F5E26221C153D10153A2A2B4433565A7D69
+        accept-lifetime 00:01:00 Mar 1 2023 infinite
+        send-lifetime 00:01:00 Mar 1 2023 infinite
+      key 9989
+        key-string 7 07200B4D4805110C413B1F5B34080F3C2322262D405F123116
+        accept-lifetime 00:01:00 Mar 1 2022 infinite
+        send-lifetime 00:01:00 Mar 1 2022 infinite
+      !
+      key chain Jmo-Wan
+      key 3
+        key-string 7 063626025658314A36470B5E34053D7E0A0D3913382B102E520A
+        accept-lifetime 00:01:00 Oct 1 2021 01:00:00 Apr 1 2022
+        send-lifetime 00:01:00 Oct 1 2021 01:00:00 Apr 1 2022
+      key 4
+        key-string 7 132C023924143E787F30783706301F293D540566535577060A11
+        accept-lifetime 00:01:00 Apr 1 2022 01:00:00 Oct 1 2022
+        send-lifetime 00:01:00 Apr 1 2022 01:00:00 Oct 1 2022
+      key 9998
+        key-string 7 031C5E3D331E2063410C2B2E4E035223352E007D3B1B1F151C17
+        accept-lifetime 00:01:00 Oct 1 2022 infinite
+        send-lifetime 00:01:00 Oct 1 2022 infinite
+      !
+      diagnostic bootup level minimal
+      memory free low-watermark processor 80526
+      !
+      cdp run
+      !
+      spanning-tree extend system-id
+      !
+      username commadmin privilege 15 secret 9 $9$XNsFtz/2SnqaLx$rwLCTUV5Qz1JQhix6TCebh5gZCCO49oGt86SOd2g8T6
+      !
+      redundancy
+      class-map match-any NG-CLASS-ROUTING
+      match ip dscp cs6
+      match protocol eigrp
+      !
+      class-map match-any NG-CLASS-VOIPDATA
+      match ip dscp ef
+      !
+      class-map match-any NG-CLASS-VIDEOCONF
+      match ip dscp af41
+      !
+      class-map match-any NG-CLASS-VOIPSIGNALING
+      match ip dscp af31
+      match ip dscp cs3
+      !
+      class-map match-any NG-CLASS-MSN-CRITICAL-APPS
+      match ip dscp af21
+      match ip dscp af22
+      match ip dscp cs2
+      !
+      class-map match-any NG-CLASS-UDP
+      match ip dscp af11
+      match ip dscp af12 
+      match ip dscp af13 
+      match ip dscp cs1
+      match access-group name NG_UDP_QOS_MATCH
+      !
+      class-map match-all CPP_NORMAL
+      match access-group name CPP_NORMAL
+      class-map match-any CPP_UNDESIRABLE
+      match access-group name CPP_UNDESIRABLE
+      class-map match-all CPP_DEFAULT
+      match access-group name CPP_DEFAULT
+      class-map match-all CPP_CRITICAL
+      match access-group name CPP_CRITICAL
+      class-map match-any CPP_IMPORTANT
+      match access-group name CPP_IMPORTANT
+      match protocol arp
+      !
+      class-map type inspect match-all JBNCT-TO-SELF-CLMP
+      match access-group name ZFW-JBNCT-TO-SELF-ACL
+      !
+      class-map type inspect match-all SELF-TO-JBNCT-CLMP
+      match access-group name ZFW-SELF-TO-JBNCT-ACL
+      !
+      class-map type inspect match-all JMET-TO-SELF-CLMP
+      match access-group name ZFW-JMET-TO-SELF-ACL
+      !
+      class-map type inspect match-all SELF-TO-JMET-CLMP
+      match access-group name ZFW-SELF-TO-JMET-ACL
+      !
+      class-map type inspect match-all JBNCT-TO-JMET-CLMP
+      match access-group name ZFW-JBNCT-TO-JMET-ACL
+      !
+      class-map type inspect match-all JMET-TO-JBNCT-CLMP
+      match access-group name ZFW-JMET-TO-JBNCT-ACL
+      !
+      class-map type inspect match-all ISPWAN-TO-SELF-CLMP
+      match access-group name ZFW-ISPWAN-TO-SELF-ACL
+      !
+      class-map type inspect match-all SELF-TO-ISPWAN-CLMP
+      match access-group name ZFW-SELF-TO-ISPWAN-ACL
+      !
+      !
+      policy-map CPP
+      class CPP_CRITICAL
+        police 512000 conform-action transmit  exceed-action transmit  violate-action transmit
+      class CPP_IMPORTANT
+        police 256000 conform-action transmit  exceed-action drop
+      class CPP_NORMAL
+        police 256000 conform-action transmit  exceed-action drop
+      class CPP_UNDESIRABLE
+        police 8000 conform-action drop  exceed-action drop
+      class CPP_DEFAULT
+        police 2048000 conform-action transmit  exceed-action drop
+      class class-default
+      !
+      policy-map NESTED-QOS-POLICY
+      class NG-CLASS-ROUTING
+        bandwidth percent 1
+      class NG-CLASS-VOIPDATA
+        priority percent 10
+      class NG-CLASS-VIDEOCONF
+        priority percent 10
+      class NG-CLASS-VOIPSIGNALING
+        priority percent 5
+      class NG-CLASS-MSN-CRITICAL-APPS
+        bandwidth percent 9
+        random-detect
+      class NG-CLASS-UDP
+        bandwidth percent 35
+      class class-default
+        fair-queue
+        random-detect
+      !
+      policy-map NG-TUNNEL-10M
+      class class-default
+        shape average 10000000 1250000 1250000
+        service-policy NESTED-QOS-POLICY
+      !
+      policy-map NG-TUNNEL-1M
+      class class-default
+        shape average 1000000
+        service-policy NESTED-QOS-POLICY
+      !
+      policy-map NG-TUNNEL-512K
+      class class-default
+        shape average 512000
+        service-policy NESTED-QOS-POLICY
+      !
+      policy-map NG-TUNNEL-256K
+      class class-default
+        shape average 256000
+        service-policy NESTED-QOS-POLICY
+      !
+      policy-map HCX-DMVPN-ADAPTIVE-PARENT
+      class class-default
+        shape adaptive upper-bound 100000000 lower-bound 20000000   
+        service-policy NESTED-QOS-POLICY
+      !
+      policy-map DMVPN-ADAPTIVE-PARENT
+      class class-default
+        shape adaptive upper-bound 20000000 lower-bound 2048000
+        service-policy NESTED-QOS-POLICY
+      !
+      policy-map type inspect JBNCT-TO-SELF-PLCY
+      class type inspect JBNCT-TO-SELF-CLMP
+        pass
+      class class-default
+      !
+      policy-map type inspect SELF-TO-JBNCT-PLCY
+      class type inspect SELF-TO-JBNCT-CLMP
+        pass
+      class class-default
+      !
+      policy-map type inspect JMET-TO-SELF-PLCY
+      class type inspect JMET-TO-SELF-CLMP
+        pass
+      class class-default
+      !
+      policy-map type inspect SELF-TO-JMET-PLCY
+      class type inspect SELF-TO-JMET-CLMP
+        pass
+      class class-default
+      !
+      policy-map type inspect JBNCT-TO-JMET-PLCY
+      class type inspect JBNCT-TO-JMET-CLMP
+        pass
+      class class-default
+      !
+      policy-map type inspect JMET-TO-JBNCT-PLCY
+      class type inspect JMET-TO-JBNCT-CLMP
+        pass
+      class class-default
+      !
+      policy-map type inspect ISPWAN-TO-SELF-PLCY
+      class type inspect ISPWAN-TO-SELF-CLMP
+        pass
+      class class-default
+      !
+      policy-map type inspect SELF-TO-ISPWAN-PLCY
+      class type inspect SELF-TO-ISPWAN-CLMP
+        pass
+      class class-default
+      !
+      policy-map type inspect JBNCT-TO-ISPWAN-PLCY
+      class class-default
+      !
+      policy-map type inspect ISPWAN-TO-JBNCT-PLCY
+      class class-default
+      !
+      !
+      zone security JBNCT
+      zone security JDI
+      zone security JMET
+      zone security JMO
+      zone security ISPC
+      zone security ISPWAN
+      !
+      zone-pair security JBNCT-TO-SELF-ZP source JBNCT destination self
+      service-policy type inspect JBNCT-TO-SELF-PLCY
+      !
+      zone-pair security SELF-TO-JBNCT-ZP source self destination JBNCT
+      service-policy type inspect SELF-TO-JBNCT-PLCY
+      !
+      zone-pair security JMET-TO-SELF-ZP source JMET destination self
+      service-policy type inspect JMET-TO-SELF-PLCY
+      !
+      zone-pair security SELF-TO-JMET-ZP source self destination JMET
+      service-policy type inspect SELF-TO-JMET-PLCY
+      !
+      zone-pair security JBNCT-TO-JMET-ZP source JBNCT destination JMET
+      service-policy type inspect JBNCT-TO-JMET-PLCY
+      !
+      zone-pair security JMET-TO-JBNCT-ZP source JMET destination JBNCT
+      service-policy type inspect JMET-TO-JBNCT-PLCY
+      !
+      zone-pair security ISPWAN-TO-SELF-ZP source ISPWAN destination self
+      service-policy type inspect ISPWAN-TO-SELF-PLCY
+      !
+      zone-pair security SELF-TO-ISPWAN-ZP source self destination ISPWAN
+      service-policy type inspect SELF-TO-ISPWAN-PLCY
+      !
+      zone-pair security JBNCT-TO-ISPWAN-ZP source JBNCT destination ISPWAN
+      service-policy type inspect JBNCT-TO-ISPWAN-PLCY
+      !
+      zone-pair security ISPWAN-TO-JBNCT-ZP source ISPWAN destination JBNCT
+      service-policy type inspect ISPWAN-TO-JBNCT-PLCY
+      !
+      !
+      !
+      crypto ikev2 proposal IKEV2-PROPOSAL
+      encryption aes-cbc-256
+      integrity sha384 sha256
+      group 21 20
+      !
+      crypto ikev2 policy IKEV2-POLICY
+      proposal IKEV2-PROPOSAL
+      !
+      crypto ikev2 proposal IKEV2-PROPOSAL-CIS
+      encryption aes-cbc-256
+      integrity sha384
+      group 21
+      !
+      crypto ikev2 policy IKEV2-POLICY-CIS
+      match fvrf CIS
+      proposal IKEV2-PROPOSAL-CIS
+      !
+      crypto ikev2 keyring KEYRING-CIS
+      peer CIS-VPN-HQ
+        description HQ-HUB
+        address 63.238.93.90
+        identity key-id MAINHUB
+        pre-shared-key XAIhU0ly6JBifMd0wGi7u/YIM0gQuVIgk7jw4FBUEQLhN1Fa
+      !
+      peer CIS-VPN-WP
+        description WP-HUB
+        address 63.148.159.120
+        identity key-id WPATHUB
+        pre-shared-key KPp9RAmC7eNCFdvU9SMqLIxncBLHYf2V61Uo2o5YrTHsXoeY
+      !
+      crypto ikev2 keyring KEYRING-ISP
+      peer DUN-T6
+        description T6-HUB
+        address 172.29.64.185
+        pre-shared-key TBI8DdhgkhESo7i61oieGaQFnr68Cqqa1Zp+XTo3dPO1a+XTo3dPI2nAzXsa+m2/
+      !
+      peer DUN-T7
+        description T7-HUB
+        address 172.29.3.4
+        pre-shared-key 7i61oieAzXsa+m2/1Zp+XTo3dPO1a+XTo3dPI2nGaQFnr68CqqaTBI8DdhgkhESo
+      !
+      peer CIS-HQ
+        description HQ-HUB
+        address 10.29.36.12
+        pre-shared-key yRumeAF0zALPvt8glBF7OaGkiBFMYviD
+      !
+      crypto ikev2 keyring KEYRING-JDI
+      peer JDI-HQ-PRI
+        description JDI-HUB-HQ-1
+        address 10.29.36.53
+        identity key-id MAINHUB1
+        pre-shared-key js9c04kn1l45lvfssdma8cdo0fsm5f2f
+      !
+      peer JDI-HQ-SEC
+        description JDI-HUB-HQ-2
+        address 10.29.37.53
+        identity key-id MAINHUB2
+        pre-shared-key 5kqfgreoi4ng09wevg9nlwrgig892jgw
+      !
+      crypto ikev2 keyring KEYRING-JMET
+      peer JMET-HUB-HQ-PRI
+        description JMET-HUB-HQ-1
+        address 172.21.3.21
+        pre-shared-key fB]U3(`%D+[1xDH(E"B{"xC{Q7IuX#2&
+      !
+      peer JMET-HUB-HQ-SEC
+        description JMET-HUB-HQ-2
+        address 172.21.3.25
+        pre-shared-key H1KaYiHNfRf9!&{-*GMefeJTQw5X-M=$
+      !
+      peer JMET-HUB-WP-TER
+        description JMET-HUB-WP
+        address 172.21.3.69
+        pre-shared-key 9F0#j9FLf460%2Fb62h8SN^!gPV0*h$d
+      !
+      peer JMET-HUB-T6
+        description JMET-HUB-T6
+        address 172.21.96.97
+        pre-shared-key tWbqoOdYKWDw+dQRzS4QiDP7lXTPBOaPnBkSaTM26bVS4cgT
+      !
+      crypto ikev2 keyring KEYRING-JMET-HCX
+      peer JMET-HCX-HUB-HQ-PRI
+        description JMET-HCX-HUB-HQ-1
+        address 172.21.3.1
+        identity key-id MAINHCX1
+        pre-shared-key feUA59Td90hjtSlE7gqxSwxoF2oKgUCy
+      !
+      peer JMET-HCX-HUB-HQ-SEC
+        description JMET-HCX-HUB-HQ-2
+        address 172.21.3.5
+        identity key-id MAINHCX2
+        pre-shared-key aYiHnIZNOHNfRf9!hqQ65GMefeJTQw5X
+      !
+      peer JMET-HCX-HUB-T6-PRI
+        description JMET-HCX-HUB-T6-1
+        address 172.21.49.68
+        pre-shared-key tWbqoOdYKWDw+dQRzS4QiDP7lXTPBOaPnBkSaTM26bVS4cgT
+      !
+      peer JMET-HCX-HUB-T6-SEC
+        description JMET-HCX-HUB-T6-2
+        address 172.21.49.70
+        pre-shared-key tWbqoOdYKWDw+dQRzS4QiDP7lXTPBOaPnBkSaTM26bVS4cgT
+      !
+      crypto ikev2 keyring KEYRING-JMO
+      peer JMO-HUB
+        description JMO-HUB-T3
+        address 172.29.0.4
+        identity key-id JMOHUB
+        pre-shared-key wevg9nlwrgi5kqg892jgwfgreoi4ng09
+      !
+      crypto ikev2 profile IKEV2-PROFILE-CIS
+      match fvrf CIS
+      match identity remote key-id MAINHUB
+      match identity remote key-id WPATHUB
+      identity local fqdn B-KL001-H-R.unit2.cis.net
+      authentication local pre-share
+      authentication remote pre-share
+      keyring local KEYRING-CIS
+      lifetime 7200
+      dpd 30 5 periodic
+      nat keepalive 10
+      !
+      crypto ikev2 profile IKEV2-PROFILE-ISP
+      match identity remote address 10.29.36.12 255.255.255.255
+      match identity remote address 172.29.64.185 255.255.255.255
+      match identity remote address 172.29.3.4 255.255.255.255
+      authentication local pre-share
+      authentication remote pre-share
+      keyring local KEYRING-ISP
+      lifetime 7200
+      dpd 30 5 periodic
+      nat keepalive 10
+      !
+      crypto ikev2 profile IKEV2-PROFILE-JDI
+      match identity remote key-id MAINHUB1
+      match identity remote key-id MAINHUB2
+      identity local fqdn B-KL001-H-R.unit2.jbn.net
+      authentication remote pre-share
+      authentication local pre-share
+      keyring local KEYRING-JDI
+      lifetime 7200
+      dpd 30 5 periodic
+      nat keepalive 10
+      !
+      crypto ikev2 profile IKEV2-PROFILE-JMET
+      match identity remote address 172.21.0.0 255.255.0.0
+      authentication local pre-share
+      authentication remote pre-share
+      keyring local KEYRING-JMET
+      lifetime 7200
+      dpd 30 5 periodic
+      nat keepalive 10
+      !
+      crypto ikev2 profile IKEV2-PROFILE-JMET-HCX
+      match identity remote key-id MAINHCX1
+      match identity remote key-id MAINHCX2
+      match identity remote address 172.21.49.68
+      match identity remote address 172.21.49.70
+      authentication remote pre-share
+      authentication local pre-share
+      keyring local KEYRING-JMET-HCX
+      lifetime 7200
+      dpd 30 5 periodic
+      nat keepalive 10
+      !
+      crypto ikev2 profile IKEV2-PROFILE-JMO
+      match identity remote key-id JMOHUB
+      identity local fqdn B-KL001-H-R.jmo.net
+      authentication remote pre-share
+      authentication local pre-share
+      keyring local KEYRING-JMO
+      lifetime 7200
+      dpd 30 5 periodic
+      nat keepalive 10
+      !
+      crypto ikev2 dpd 30 5 periodic
+      crypto ikev2 fragmentation mtu 1400
+      !
+      crypto ipsec security-association lifetime kilobytes disable
+      crypto ipsec security-association replay window-size 1024
+      crypto ipsec security-association lifetime seconds 7200
+      crypto ipsec security-association idle-time 120
+      !
+      crypto ipsec transform-set V2TRANS-AES esp-aes 256 esp-sha-hmac
+      mode tunnel
+      !
+      crypto ipsec profile IPSEC-PROFILE-CIS
+      set security-association lifetime kilobytes disable
+      set transform-set V2TRANS-AES
+      set ikev2-profile IKEV2-PROFILE-CIS
+      !
+      crypto ipsec profile IPSEC-PROFILE-ISP
+      set security-association lifetime kilobytes disable
+      set security-association replay window-size 1024
+      set transform-set V2TRANS-AES
+      set ikev2-profile IKEV2-PROFILE-ISP
+      !
+      crypto ipsec profile IPSEC-PROFILE-JDI
+      set security-association lifetime kilobytes disable
+      set security-association replay window-size 1024
+      set transform-set V2TRANS-AES
+      set ikev2-profile IKEV2-PROFILE-JDI
+      !
+      crypto ipsec profile IPSEC-PROFILE-JMET
+      set security-association lifetime kilobytes disable
+      set security-association replay window-size 1024
+      set transform-set V2TRANS-AES
+      set ikev2-profile IKEV2-PROFILE-JMET
+      !
+      crypto ipsec profile IPSEC-PROFILE-JMET-HCX
+      set security-association lifetime kilobytes disable
+      set security-association replay window-size 1024
+      set transform-set V2TRANS-AES
+      set ikev2-profile IKEV2-PROFILE-JMET-HCX
+      !
+      crypto ipsec profile IPSEC-PROFILE-JMO
+      set security-association lifetime kilobytes disable
+      set security-association replay window-size 1024
+      set transform-set V2TRANS-AES
+      set ikev2-profile IKEV2-PROFILE-JMO
+      !!
+      bridge-domain 1
+      bridge-domain 10
+      bridge-domain 20
+      bridge-domain 25
+      bridge-domain 45
+      bridge-domain 60
+      bridge-domain 85
+      bridge-domain 90
+      bridge-domain 100
+      bridge-domain 200
+      bridge-domain 240
+      !
+      interface BDI1
+      description MGMT
+      ip address 192.168.252.253 255.255.255.252
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI10
+      description KG SUBNET HIGHEST USABLE IN CT SUBNET
+      ip address 172.29.244.6 255.255.255.248
+      zone-member security JBNCT
+      ip pim dense-mode
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI20
+      description JMET
+      ip address dhcp
+      zone-member security JMET
+      no ip redirects
+      no ip unreachables
+      no ip proxy-arp
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI25
+      description JMET HCX
+      ip address dhcp
+      zone-member security JMET
+      no ip redirects
+      no ip unreachables
+      no ip proxy-arp
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI45
+      description JBN OVER CIS VPN
+      ip vrf forwarding CIS
+      ip address dhcp
+      zone-member security ISPWAN
+      !
+      interface BDI60
+      description CIS/DUN
+      ip vrf forwarding ISP
+      ip address 10.252.180.6 255.255.255.248
+      zone-member security ISPC
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI85
+      description MANET
+      ip address 10.138.0.1 255.255.254.0
+      zone-member security JBNCT
+      ip pim dense-mode
+      ip mobile arp access-group RADIOS
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI90
+      description SCPC TER
+      bandwidth 9000
+      ip address dhcp
+      zone-member security JBNCT
+      delay 4000
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI100
+      description SOF-U_DATA
+      ip vrf forwarding JDI
+      ip address 10.236.96.6 255.255.255.248
+      zone-member security JDI
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI200
+      description SOF-U_VOICE
+      ip vrf forwarding JDI
+      ip address 10.236.120.6 255.255.255.248
+      
+      zone-member security JDI
+      no mop enabled
+      no mop sysid
+      !
+      interface BDI240
+      description JMO
+      ip vrf forwarding JMO
+      ip address 10.240.244.6 255.255.255.248
+      zone-member security JMO
+      no mop enabled
+      no mop sysid
+      
+      
+      bridge irb
+      !
+      interface GigabitEthernet1
+      description SCPC_PRI
+      no ip vrf forwarding MGMT
+      ip address dhcp
+      zone-member security JBNCT
+      bandwidth 11000
+      delay 4000
+      speed 10000
+      no negotiation auto
+      no mop enabled
+      no mop sysid
+      !
+      interface GigabitEthernet2
+      description SCPC_SEC
+      ip address dhcp
+      zone-member security JBNCT
+      bandwidth 10000
+      delay 4000
+      speed 10000
+      no negotiation auto
+      no mop enabled
+      no mop sysid
+      !
+      interface GigabitEthernet3
+      description TRUNK NATIVE VLAN 1 - SFP+1
+      no ip address
+      speed 10000
+      no negotiation auto
+      no mop enabled
+      no mop sysid
+      service instance 1 ethernet
+        encapsulation untagged
+        bridge-domain 1
+      !
+      service instance 10 ethernet
+        encapsulation dot1q 10
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 10
+      !
+      service instance 20 ethernet
+        encapsulation dot1q 20
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 20
+      !
+        service instance 25 ethernet
+        encapsulation dot1q 25
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 25
+      !
+        service instance 45 ethernet
+        encapsulation dot1q 45
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 45
+      !
+      service instance 60 ethernet
+        encapsulation dot1q 60
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 60
+      !        
+      service instance 85 ethernet
+        encapsulation dot1q 85
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 85
+      !
+      service instance 90 ethernet
+        encapsulation dot1q 90
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 90
+      !
+      service instance 100 ethernet
+        encapsulation dot1q 100
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 100
+      !
+      service instance 200 ethernet
+        encapsulation dot1q 200
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 200
+      !
+        service instance 240 ethernet
+        encapsulation dot1q 240
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 240
+      !
+      interface GigabitEthernet4
+      description TRUNK NATIVE VLAN 1 - SFP+0
+      no ip address
+      speed 10000
+      no negotiation auto
+      no mop enabled
+      no mop sysid
+      service instance 1 ethernet
+        encapsulation untagged
+        bridge-domain 1
+      !
+      service instance 10 ethernet
+        encapsulation dot1q 10
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 10
+      !
+      service instance 20 ethernet
+        encapsulation dot1q 20
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 20
+      !
+      service instance 25 ethernet
+        encapsulation dot1q 25
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 25
+      ! 
+      service instance 45 ethernet
+        encapsulation dot1q 45
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 45
+      !
+      service instance 60 ethernet
+        encapsulation dot1q 60
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 60
+      !        
+      service instance 85 ethernet
+        encapsulation dot1q 85
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 85
+      !
+      service instance 90 ethernet
+        encapsulation dot1q 90
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 90
+      !
+      service instance 100 ethernet
+        encapsulation dot1q 100
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 100
+      !
+      service instance 200 ethernet
+        encapsulation dot1q 200
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 200
+      !
+        service instance 240 ethernet
+        encapsulation dot1q 240
+        rewrite ingress tag pop 1 symmetric
+        bridge-domain 240
+      !
+      !
+      !
+      interface Tunnel4
+      ip vrf forwarding JMO
+      ip unnumbered BDI240
+      tunnel destination 172.29.0.4
+      load-interval 30
+      description KL001 DVTI-JMO
+      bandwidth 100
+      ip mtu 1300
+      zone-member security JMO
+      ip tcp adjust-mss 1260
+      delay 4000
+      tunnel source BDI10
+      tunnel mode ipsec ipv4
+      tunnel protection ipsec profile IPSEC-PROFILE-JMO
+      !
+      interface Tunnel31
+      ip dhcp client client-id BDI25
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      no ip redirects
+      ip nhrp network-id 31
+      ip nhrp interest none
+      ip nhrp nhs 10.29.41.254 nbma 172.21.3.1 multicast
+      nhrp group HCXADAPTIVE
+      nhrp map group HCXHUB service-policy output HCX-DMVPN-ADAPTIVE-PARENT
+      tunnel key 31
+      load-interval 30
+      ip access-group KL-TO-HQ out
+      ip access-group HQ-TO-KL in
+      description KL001 DMVPN-HCX-HQ-PRI
+      bandwidth 2500
+      ip mtu 1400
+      zone-member security JBNCT
+      ip tcp adjust-mss 1360
+      delay 3700
+      tunnel source BDI25
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-JMET-HCX shared
+      !
+      interface Tunnel35
+      ip dhcp client client-id BDI25
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      no ip redirects
+      ip nhrp network-id 35
+      ip nhrp interest none
+      ip nhrp nhs 10.29.43.254 nbma 172.21.3.5 multicast
+      nhrp group HCXADAPTIVE
+      nhrp map group HCXHUB service-policy output HCX-DMVPN-ADAPTIVE-PARENT
+      tunnel key 35
+      load-interval 30
+      ip access-group KL-TO-HQ out
+      ip access-group HQ-TO-KL in
+      description KL001 DMVPN-HCX-HQ-SEC
+      bandwidth 2500
+      ip mtu 1400
+      zone-member security JBNCT
+      ip tcp adjust-mss 1360
+      delay 3800
+      tunnel source BDI25
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-JMET-HCX shared
+      !
+      interface Tunnel321
+      ip dhcp client client-id BDI20
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      no ip redirects
+      ip nhrp network-id 321
+      ip nhrp interest none
+      ip nhrp nhs 10.29.40.254 nbma 172.21.3.21 multicast
+      nhrp group ADAPTIVE
+      nhrp map group HUB service-policy output DMVPN-ADAPTIVE-PARENT
+      tunnel key 321
+      load-interval 30
+      ip access-group KL-TO-HQ out
+      ip access-group HQ-TO-KL in
+      description KL001 DMVPN-JMET-HQ-PRI
+      bandwidth 2500
+      ip mtu 1400
+      zone-member security JBNCT
+      ip tcp adjust-mss 1360
+      delay 4000
+      tunnel source BDI20
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-JMET shared
+      !
+      interface Tunnel325
+      ip dhcp client client-id BDI20
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      no ip redirects
+      ip nhrp network-id 325
+      ip nhrp interest none
+      ip nhrp nhs 10.29.42.254 nbma 172.21.3.25 multicast
+      nhrp group ADAPTIVE
+      nhrp map group HUB service-policy output DMVPN-ADAPTIVE-PARENT
+      tunnel key 325
+      load-interval 30
+      ip access-group KL-TO-HQ out
+      ip access-group HQ-TO-KL in
+      description KL001 DMVPN-JMET-HQ-SEC
+      bandwidth 2500
+      ip mtu 1400
+      zone-member security JBNCT
+      ip tcp adjust-mss 1360
+      delay 4500
+      tunnel source BDI20
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-JMET shared
+      !
+      interface Tunnel369
+      ip dhcp client client-id BDI20
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      no ip redirects
+      ip nhrp network-id 369
+      ip nhrp interest none
+      ip nhrp nhs 10.29.241.254 nbma 172.21.3.69 multicast
+      nhrp group ADAPTIVE
+      nhrp map group HUB service-policy output DMVPN-ADAPTIVE-PARENT
+      tunnel key 369
+      load-interval 30
+      ip access-group KL-TO-WP out
+      ip access-group WP-TO-KL in
+      description KL001 DMVPN-JMET-WP-TER
+      bandwidth 2500
+      ip mtu 1400
+      zone-member security JBNCT
+      ip tcp adjust-mss 1360
+      delay 5000
+      tunnel source BDI20
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-JMET shared
+      !
+      interface Tunnel3612
+      ip vrf forwarding ISP
+      ip dhcp client client-id BDI60
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      ip nhrp network-id 600
+      ip nhrp interest none
+      ip nhrp nhs 172.27.255.254 nbma 10.29.36.12 multicast
+      tunnel key 600
+      load-interval 30
+      description KL001 DMVPN-CIS-HQ
+      bandwidth 1100
+      ip mtu 1350
+      zone-member security ISPC
+      ip tcp adjust-mss 1310
+      delay 4000
+      tunnel source BDI10
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-ISP shared
+      !
+      interface Tunnel3653
+      ip vrf forwarding JDI
+      ip unnumbered BDI100
+      tunnel destination 10.29.36.53
+      load-interval 30
+      description KL001 DVTI-JDI-HQ-PRI
+      bandwidth 2000
+      ip mtu 1300
+      zone-member security JDI
+      ip tcp adjust-mss 1260
+      delay 4000
+      tunnel source BDI10
+      tunnel mode ipsec ipv4
+      tunnel protection ipsec profile IPSEC-PROFILE-JDI shared
+      !
+      interface Tunnel3753
+      ip vrf forwarding JDI
+      ip unnumbered BDI100
+      tunnel destination 10.29.37.53
+      load-interval 30
+      description KL001 DVTI-JDI-HQ-SEC
+      bandwidth 2000
+      ip mtu 1300
+      zone-member security JDI
+      ip tcp adjust-mss 1260
+      delay 4001
+      tunnel source BDI10
+      tunnel mode ipsec ipv4
+      tunnel protection ipsec profile IPSEC-PROFILE-JDI shared
+      !
+      interface Tunnel4968
+      ip dhcp client client-id ascii BDI25
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      no ip redirects
+      ip nhrp network-id 4968
+      ip nhrp interest none
+      ip nhrp nhs 172.29.204.126 nbma 172.21.49.68 multicast priority 1 cluster 1
+      ip nhrp nhs 172.29.204.125 nbma 172.21.49.70 multicast priority 2 cluster 1
+      ip nhrp nhs cluster 1 max-connections 1
+      nhrp group ADAPTIVE
+      nhrp map group HUB service-policy output HCX-DMVPN-ADAPTIVE-PARENT
+      tunnel key 4968
+      load-interval 30
+      ip access-group KL-TO-T6 out
+      ip access-group T6-TO-KL in
+      shutdown
+      description KL001 DMVPN-JMET-HCX-T6
+      bandwidth 2500
+      ip mtu 1360
+      zone-member security JBNCT
+      ip tcp adjust-mss 1320
+      delay 4200
+      tunnel source BDI25
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-JMET-HCX shared
+      !
+      interface Tunnel19697
+      ip dhcp client client-id ascii BDI20
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      no ip redirects
+      ip nhrp network-id 16
+      ip nhrp interest none
+      ip nhrp nhs 172.29.221.30 nbma 172.21.96.97 multicast
+      nhrp group ADAPTIVE
+      nhrp map group HUB service-policy output DMVPN-ADAPTIVE-PARENT
+      tunnel key 16
+      load-interval 30
+      ip access-group KL-TO-T6 out
+      ip access-group T6-TO-KL in
+      shutdown
+      description KL001 DMVPN-JMET-T6
+      bandwidth 2500
+      ip mtu 1400
+      zone-member security JBNCT
+      ip tcp adjust-mss 1360
+      delay 4400
+      tunnel source BDI20
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-JMET shared
+      !
+      interface Tunnel60000
+      ip vrf forwarding ISP
+      ip dhcp client client-id BDI60
+      ip dhcp client broadcast-flag clear
+      ip address dhcp
+      ip nhrp authentication Ch1nL33
+      no ip redirects
+      ip nhrp network-id 60000
+      ip nhrp interest none
+      ip nhrp nhs 10.199.162.254 nbma 172.29.64.185 multicast
+      tunnel key 60000
+      load-interval 30
+      description KL001 DMVPN-DUN-T6
+      bandwidth 1000
+      ip mtu 1300
+      zone-member security ISPC
+      ip tcp adjust-mss 1260
+      delay 4000
+      tunnel source BDI10
+      tunnel mode gre multipoint
+      tunnel protection ipsec profile IPSEC-PROFILE-ISP shared
+      !
+      interface Tunnel70000
+      ip vrf forwarding ISP
+      ip unnumbered BDI60
+      tunnel destination 172.29.3.4
+      load-interval 30
+      description KL001 DVTI-DUN-T7
+      bandwidth 1000
+      ip mtu 1300
+      zone-member security ISPC
+      ip tcp adjust-mss 1260
+      delay 4500
+      tunnel source BDI10
+      tunnel mode ipsec ipv4
+      tunnel protection ipsec profile IPSEC-PROFILE-ISP shared
+      !
+      interface Tunnel9390
+      ip unnumbered BDI10
+      tunnel destination 63.238.93.90
+      tunnel vrf CIS
+      load-interval 30
+      ip access-group KL-TO-HQ out
+      ip access-group HQ-TO-KL in
+      description KL001 DVTI-CIS-HQ
+      bandwidth 4000
+      ip mtu 1400
+      zone-member security JBNCT
+      ip tcp adjust-mss 1360
+      delay 6000
+      tunnel source BDI45
+      tunnel mode ipsec ipv4
+      tunnel protection ipsec profile IPSEC-PROFILE-CIS shared
+      !
+      interface Tunnel159120
+      ip unnumbered BDI10
+      tunnel destination 63.148.159.120
+      tunnel vrf CIS
+      load-interval 30
+      ip access-group KL-TO-WP out
+      ip access-group WP-TO-KL in
+      description KL001 DVTI-CIS-WP
+      bandwidth 4000
+      ip mtu 1400
+      zone-member security JBNCT
+      ip tcp adjust-mss 1360
+      delay 6500
+      tunnel source BDI45
+      tunnel mode ipsec ipv4
+      tunnel protection ipsec profile IPSEC-PROFILE-CIS shared
+      !
+      !
+      router eigrp PVT_NET
+      !
+      address-family ipv4 unicast autonomous-system 2163
+        !
+        af-interface default
+        authentication mode md5
+        authentication key-chain Jbn-Wan
+        passive-interface
+        exit-af-interface
+        af-interface Tunnel31
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel35
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel321
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel325
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel369
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel4968
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel19697
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel9390
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel159120
+        no passive-interface
+        exit-af-interface
+        af-interface GigabitEthernet1
+        no passive-interface
+        exit-af-interface
+        af-interface GigabitEthernet2
+        no passive-interface
+        exit-af-interface
+        af-interface BDI90
+        no passive-interface
+        exit-af-interface
+        af-interface BDI85
+        no passive-interface
+        exit-af-interface
+      !
+        topology base
+        distribute-list prefix EXPED-MAIN in GigabitEthernet1
+        distribute-list prefix EXPED-MAIN in GigabitEthernet2
+        distribute-list prefix EXPED-MAIN in BDI90
+        distribute-list prefix EXPED-MAIN in Tunnel31
+        distribute-list prefix EXPED-MAIN in Tunnel35
+        distribute-list prefix EXPED-MAIN in Tunnel321
+        distribute-list prefix EXPED-MAIN in Tunnel325
+        distribute-list prefix EXPED-MAIN in Tunnel9390
+        distribute-list prefix EXPED-WP in Tunnel369
+        distribute-list prefix EXPED-WP in Tunnel159120
+        distribute-list prefix EXPED-T6 in Tunnel4968
+        distribute-list prefix EXPED-T6 in Tunnel19697
+        distribute-list prefix EXPED-OUT-WAN out GigabitEthernet1
+        distribute-list prefix EXPED-OUT-WAN out GigabitEthernet2
+        distribute-list prefix EXPED-OUT-WAN out BDI90
+        distribute-list prefix EXPED-OUT-WAN out Tunnel31
+        distribute-list prefix EXPED-OUT-WAN out Tunnel35
+        distribute-list prefix EXPED-OUT-WAN out Tunnel321
+        distribute-list prefix EXPED-OUT-WAN out Tunnel325
+        distribute-list prefix EXPED-OUT-WAN out Tunnel369
+        distribute-list prefix EXPED-OUT-WAN out Tunnel4968
+        distribute-list prefix EXPED-OUT-WAN out Tunnel19697
+        distribute-list prefix EXPED-OUT-WAN out Tunnel9390
+        distribute-list prefix EXPED-OUT-WAN out Tunnel159120
+        exit-af-topology
+        network 10.29.0.0 0.0.255.255
+        network 10.138.0.0 0.0.1.255
+        network 172.29.0.0
+        eigrp router-id 172.29.244.6
+        eigrp stub connected redistributed leak-map EXPED
+      exit-address-family
+      address-family ipv4 unicast vrf JMO autonomous-system 240
+        !
+        af-interface default
+        authentication mode md5
+        authentication key-chain Jmo-Wan
+        passive-interface
+        exit-af-interface
+        af-interface Tunnel4
+        no passive-interface
+        exit-af-interface
+      !
+        topology base
+        exit-af-topology
+        network 10.240.0.0 0.0.255.255
+        eigrp router-id 10.240.244.6
+        eigrp stub connected
+      exit-address-family
+      address-family ipv4 unicast vrf ISP autonomous-system 250
+        !
+      !
+        topology base
+        exit-af-topology
+        network 10.199.221.0 0.0.0.255
+        network 10.199.162.0 0.0.0.255
+        network 10.252.180.0 255.255.255.248
+        eigrp router-id 10.252.180.6
+        eigrp stub connected
+      exit-address-family
+      address-family ipv4 unicast vrf JDI autonomous-system 5
+        !
+        af-interface default
+        authentication mode md5
+        authentication key-chain Jdi-Wan
+        passive-interface
+        exit-af-interface
+        af-interface Tunnel3753
+        no passive-interface
+        exit-af-interface
+        af-interface Tunnel3653
+        no passive-interface
+        exit-af-interface
+      !
+        topology base
+        exit-af-topology
+        network 10.236.96.0 255.255.255.248
+        network 10.236.120.0 255.255.255.248
+        eigrp router-id 10.236.96.6
+        eigrp stub connected leak-map JDI-LEAK
+      exit-address-family
+      !
+      router eigrp PVT_NET_2
+      !
+      address-family ipv4 unicast vrf ISP autonomous-system 600
+        !
+      !
+        topology base
+        exit-af-topology
+        network 172.27.0.0
+        network 10.252.180.0 255.255.255.248
+        eigrp router-id 10.252.180.6
+        eigrp stub connected
+      exit-address-family
+      !
+      
+      !
+      !
+      no ip forward-protocol nd
+      no ip http server
+      no ip http authentication local
+      no ip http secure-server
+      !
+      ip tftp source-interface BDI1
+      !
+      ip route 172.21.0.0 255.255.0.0 BDI20 dhcp
+      ip route 172.21.3.1 255.255.255.255 BDI25 dhcp
+      ip route 172.21.3.5 255.255.255.255 BDI25 dhcp
+      ip route 172.21.49.68 255.255.255.255 BDI25 dhcp
+      ip route 172.21.49.70 255.255.255.255 BDI25 dhcp
+      ip route vrf CIS 63.238.93.90 255.255.255.255 BDI45 dhcp
+      ip route vrf CIS 63.148.159.120 255.255.255.255 BDI45 dhcp
+      ip route vrf CIS 0.0.0.0 0.0.0.0 BDI45 dhcp
+      !
+      !
+      ip ssh source-interface BDI10
+      ip ssh version 2
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr aes128-cbc aes192-cbc aes256-cbc
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr aes128-cbc aes192-cbc aes256-cbc
+      !
+      ip access-list standard RADIOS
+      permit 172.20.0.0 0.0.255.255
+      !
+      !
+      ip access-list standard 1
+      remark CONTROL_REMOTE_SSH_ACCESS
+      permit 172.29.0.0 0.0.255.255
+      permit 10.129.0.0 0.0.255.255
+      permit 10.29.9.0 0.0.0.255
+      permit 192.168.252.254
+      permit 10.211.211.0 0.0.0.7
+      deny   any log
+      !
+      ip access-list standard 2
+      remark CONTROL_SNMP_ACCESS
+      permit 172.29.60.75
+      permit 172.29.63.21
+      permit 172.29.216.50
+      permit 172.29.241.53
+      permit 10.29.9.53
+      deny   any
+      !
+      ip access-list extended CPP_CRITICAL
+      remark EIGRP_PIM
+      permit eigrp any any
+      permit pim any any
+      deny   ip any any
+      !
+      ip access-list extended CPP_DEFAULT
+      permit ip any any
+      !
+      ip access-list extended CPP_IMPORTANT
+      remark TACACS_SNMP_NTP
+      permit tcp any host 192.168.252.253 eq 22
+      permit tcp any host 172.29.244.6 eq 22
+      permit tcp any host 172.29.244.5 eq 22
+      permit tcp any host 10.211.211.1 eq 22
+      permit tcp any host 10.211.211.6 eq telnet
+      permit tcp host 172.29.60.75 eq tacacs any
+      permit udp host 172.29.60.75 any eq snmp
+      permit udp host 10.29.9.53 any eq snmp
+      permit tcp host 172.29.241.53 eq tacacs any
+      permit udp host 172.29.254.1 eq ntp any
+      permit udp host 172.29.244.5 eq ntp any
+      permit udp host 172.21.3.1 eq ntp any
+      permit udp host 172.21.3.5 eq ntp any
+      permit udp host 172.21.3.21 eq ntp any
+      permit udp host 172.21.3.25 eq ntp any
+      permit udp host 172.21.3.69 eq ntp any
+      permit udp host 96.47.67.105 eq ntp any
+      permit udp host 60.90.182.55 eq ntp any
+      deny   ip any any
+      !
+      ip access-list extended CPP_NORMAL
+      remark ICMP
+      permit icmp any any echo
+      permit icmp any any echo-reply
+      permit icmp any any time-exceeded
+      permit icmp any any unreachable
+      deny   ip any any
+      !
+      ip access-list extended CPP_UNDESIRABLE
+      remark EXPLICIT_DROP
+      permit udp any any eq ntp
+      permit udp any any eq snmptrap
+      permit tcp any any eq 22
+      permit tcp any any eq telnet
+      permit ospf any any
+      permit udp any any eq rip
+      permit tcp any eq bgp any
+      permit tcp any any eq bgp
+      permit udp any host 224.0.1.40
+      permit udp any host 224.0.1.39
+      permit udp any any eq snmp
+      permit pim any any
+      permit tcp any any eq tacacs
+      deny   ip any any
+      !
+      ip access-list extended NG_UDP_QOS_MATCH
+      permit udp any any
+      !
+      ip access-list extended ZFW-JBNCT-TO-SELF-ACL
+      permit ip any any
+      !
+      ip access-list extended ZFW-SELF-TO-JBNCT-ACL
+      permit ip any any
+      !
+      ip access-list extended ZFW-JMET-TO-SELF-ACL
+      permit udp any eq bootps any eq bootpc
+      permit udp 172.21.0.0 0.0.255.255 eq isakmp any eq isakmp
+      permit udp 172.21.0.0 0.0.255.255 eq non500-isakmp any eq non500-isakmp
+      permit esp 172.21.0.0 0.0.255.255 any
+      permit udp 172.21.0.0 0.0.255.255 eq ntp host 172.29.244.6 eq ntp
+      permit icmp any any
+      !
+      ip access-list extended ZFW-SELF-TO-JMET-ACL
+      permit udp any eq bootpc any eq bootps
+      permit udp any eq isakmp 172.21.0.0 0.0.255.255 eq isakmp
+      permit udp any eq non500-isakmp 172.21.0.0 0.0.255.255 eq non500-isakmp
+      permit esp any 172.21.0.0 0.0.255.255
+      permit udp host 172.29.244.6 eq ntp 172.21.0.0 0.0.255.255 eq ntp
+      permit icmp any any
+      !
+      ip access-list extended ZFW-JBNCT-TO-JMET-ACL
+      permit ip any any
+      !
+      ip access-list extended ZFW-JMET-TO-JBNCT-ACL
+      permit ip any any
+      !
+      ip access-list extended ZFW-ISPWAN-TO-SELF-ACL
+      permit udp any eq bootps any eq bootpc
+      permit udp host 63.238.93.90 eq isakmp any eq isakmp
+      permit udp host 63.238.93.90 eq non500-isakmp any eq non500-isakmp
+      permit esp host 63.238.93.90 any
+      permit udp host 63.148.159.120 eq isakmp any eq isakmp
+      permit udp host 63.148.159.120 eq non500-isakmp any eq non500-isakmp
+      permit esp host 63.148.159.120 any
+      permit icmp any any
+      !
+      ip access-list extended ZFW-SELF-TO-ISPWAN-ACL
+      permit udp any eq bootpc any eq bootps
+      permit udp any eq isakmp host 63.238.93.90 eq isakmp
+      permit udp any eq non500-isakmp host 63.238.93.90 eq non500-isakmp
+      permit esp any host 63.238.93.90
+      permit udp any eq isakmp host 63.148.159.120 eq isakmp
+      permit udp any eq non500-isakmp host 63.148.159.120 eq non500-isakmp
+      permit esp any host 63.148.159.120
+      permit icmp any any
+      !
+      ip access-list extended KL-TO-HQ
+      permit ip host 172.29.244.1 10.29.32.0 0.0.0.7
+      permit ip host 172.29.244.2 10.29.34.0 0.0.0.7
+      permit ip host 172.29.244.1 host 172.29.241.57
+      permit ip host 172.29.244.2 host 172.29.241.58
+      permit icmp 172.29.244.0 0.0.0.7 any echo-reply
+      permit icmp 172.29.244.0 0.0.0.7 any echo
+      deny   ip host 172.29.244.1 any
+      deny   ip host 172.29.244.2 any
+      permit ip any any
+      !
+      ip access-list extended HQ-TO-KL
+      permit ip 10.29.32.0 0.0.0.7 host 172.29.244.1
+      permit ip 10.29.34.0 0.0.0.7 host 172.29.244.2
+      permit ip host 172.29.241.57 host 172.29.244.1
+      permit ip host 172.29.241.58 host 172.29.244.2
+      permit icmp any 172.29.244.0 0.0.0.7 echo-reply
+      permit icmp any 172.29.244.0 0.0.0.7 echo
+      deny   ip any host 172.29.244.1
+      deny   ip any host 172.29.244.2
+      permit ip any any
+      !
+      ip access-list extended KL-TO-WP
+      permit ip host 172.29.244.1 10.29.242.0 0.0.0.3
+      permit ip host 172.29.244.2 10.29.244.0 0.0.0.3
+      permit ip host 172.29.244.1 host 172.29.241.57
+      permit ip host 172.29.244.2 host 172.29.241.58
+      permit icmp 172.29.244.0 0.0.0.7 any echo-reply
+      permit icmp 172.29.244.0 0.0.0.7 any echo
+      deny   ip host 172.29.244.1 any
+      deny   ip host 172.29.244.2 any
+      permit ip any any
+      !
+      ip access-list extended WP-TO-KL
+      permit ip 10.29.242.0 0.0.0.3 host 172.29.244.1
+      permit ip 10.29.244.0 0.0.0.3 host 172.29.244.2
+      permit ip host 172.29.241.57 host 172.29.244.1
+      permit ip host 172.29.241.58 host 172.29.244.2
+      permit icmp any 172.29.244.0 0.0.0.7 echo-reply
+      permit icmp any 172.29.244.0 0.0.0.7 echo
+      deny   ip any host 172.29.244.1
+      deny   ip any host 172.29.244.2
+      permit ip any any
+      !
+      ip access-list extended KL-TO-T3
+      permit ip host 172.29.244.1 host 172.29.60.65
+      permit ip host 172.29.244.2 host 172.29.60.67
+      permit ip host 172.29.244.1 host 172.29.241.57
+      permit ip host 172.29.244.2 host 172.29.241.58
+      permit icmp 172.29.244.0 0.0.0.7 any echo-reply
+      permit icmp 172.29.244.0 0.0.0.7 any echo
+      deny   ip host 172.29.244.1 any
+      deny   ip host 172.29.244.2 any
+      permit ip any any
+      !
+      ip access-list extended T3-TO-KL
+      permit ip host 172.29.60.65 host 172.29.244.1
+      permit ip host 172.29.60.67 host 172.29.244.2
+      permit ip host 172.29.241.57 host 172.29.244.1
+      permit ip host 172.29.241.58 host 172.29.244.2
+      permit icmp any 172.29.244.0 0.0.0.7 echo-reply
+      permit icmp any 172.29.244.0 0.0.0.7 echo
+      deny   ip any host 172.29.244.1
+      deny   ip any host 172.29.244.2
+      permit ip any any
+      !
+      ip access-list extended KL-TO-T6
+      permit ip host 172.29.244.1 host 172.29.65.121
+      permit ip host 172.29.244.2 host 172.29.65.122
+      permit ip host 172.29.244.1 host 172.29.241.49
+      permit ip host 172.29.244.2 host 172.29.241.50
+      permit ip host 172.29.244.1 host 172.29.241.57
+      permit ip host 172.29.244.2 host 172.29.241.58
+      permit icmp 172.29.244.0 0.0.0.7 any echo-reply
+      permit icmp 172.29.244.0 0.0.0.7 any echo
+      deny   ip host 172.29.244.1 any
+      deny   ip host 172.29.244.2 any
+      permit ip any any
+      !
+      ip access-list extended T6-TO-KL
+      permit ip host 172.29.65.121 host 172.29.244.1
+      permit ip host 172.29.65.122 host 172.29.244.2
+      permit ip host 172.29.241.49 host 172.29.244.1
+      permit ip host 172.29.241.50 host 172.29.244.2
+      permit ip host 172.29.241.57 host 172.29.244.1
+      permit ip host 172.29.241.58 host 172.29.244.2
+      permit icmp any 172.29.244.0 0.0.0.7 echo-reply
+      permit icmp any 172.29.244.0 0.0.0.7 echo
+      deny   ip any host 172.29.244.1
+      deny   ip any host 172.29.244.2
+      permit ip any any
+      !
+      ip prefix-list EXPED-MAIN seq 10 permit 10.29.32.0/30
+      ip prefix-list EXPED-MAIN seq 20 permit 10.29.32.4/30
+      ip prefix-list EXPED-MAIN seq 30 permit 10.29.34.0/30
+      ip prefix-list EXPED-MAIN seq 40 permit 10.29.34.4/30
+      ip prefix-list EXPED-MAIN seq 50 permit 10.29.0.0/16
+      ip prefix-list EXPED-MAIN seq 60 permit 172.29.0.0/16
+      !
+      ip prefix-list EXPED-WP seq 10 permit 10.29.242.0/30
+      ip prefix-list EXPED-WP seq 20 permit 10.29.244.0/30
+      ip prefix-list EXPED-WP seq 30 permit 10.29.0.0/16
+      ip prefix-list EXPED-WP seq 40 permit 172.29.0.0/16
+      !
+      ip prefix-list EXPED-T3 seq 10 permit 172.29.60.64/27
+      ip prefix-list EXPED-T3 seq 20 permit 10.29.0.0/16
+      ip prefix-list EXPED-T3 seq 30 permit 172.29.0.0/16
+      !
+      ip prefix-list EXPED-T6 seq 10 permit 172.29.65.120/29
+      ip prefix-list EXPED-T6 seq 20 permit 172.29.241.48/28
+      ip prefix-list EXPED-T6 seq 30 permit 10.29.0.0/16
+      ip prefix-list EXPED-T6 seq 40 permit 172.29.0.0/16
+      !
+      ip prefix-list EXPED-OUT-WAN seq 10 permit 172.29.0.0/16 le 32
+      !
+      ip prefix-list EXPED-OUT-CAN seq 10 permit 172.29.0.0/16 le 32
+      !
+      ip prefix-list JDI-EXPED seq 10 permit 10.236.96.0/17 le 32
+      ip prefix-list JDI-EXPED seq 20 permit 0.0.0.0/0
+      !
+      !
+      logging origin-id hostname
+      logging facility syslog
+      logging source-interface BDI10
+      logging host 172.29.60.75 transport udp port 516
+      !
+      route-map EXPED permit 10
+      match ip address prefix-list EXPED-OUT-CAN
+      !
+      route-map EXPED permit 20
+      match ip address RADIOS
+      !
+      route-map JDI-LEAK permit 10
+      match ip address prefix-list JDI-EXPED
+      !
+      !
+      snmp ifmib ifindex persist
+      snmp-server group commreadonly v3 priv match prefix read commreadview access 2
+      snmp-server view commreadview internet included
+      snmp-server view commreadview system included
+      snmp-server view commreadview interfaces included
+      snmp-server view commreadview chassis included
+      snmp-server source-interface informs BDI10
+      !
+      snmp-server user mfsreadonlyuser commreadonly v3 auth SHA f67a64232143c1ac4d9df1c37eb80d68371ebd8154a4a6badfb27cde7c898f34 priv AES 256 d401044659f559e66c513200f20c3f7614d207ef9a34ec801345c21fc97f20e8 access 2
+      snmp-server location MFS
+      !
+      tacacs-server timeout 4
+      tacacs-server directed-request
+      !
+      ip tacacs source-interface BDI10
+      !
+      tacacs server JTF06-PSN-01
+      address ipv4 172.29.241.53
+      key 7 02320C1A050D2B604A485A0B561906
+      tacacs server JTF03-PSN-01
+      address ipv4 172.29.60.75
+      key 7 02320C1A050D2B604A485A0B561906
+      !
+      control-plane
+      service-policy input CPP
+      !
+      !
+      !
+      privilege interface level 5 shutdown
+      privilege interface level 5 no shutdown
+      privilege interface level 5 no
+      privilege exec level 5 event manager run
+      privilege exec level 5 event manager
+      privilege exec level 5 event
+      privilege exec level 5 enable
+      privilege exec level 5 configure terminal
+      privilege exec level 5 configure
+      !
+      banner motd  ^
+      DOD NOTICE AND CONSENT BANNER
+
+      You are accessing a U.S. Government (USG) Information System
+      (IS) that is provided for USG-authorized use only.
+
+      By using this IS (which includes any device attached to this
+      IS), you consent to the following conditions:
+      - The USG routinely intercepts and monitors communications on
+      this IS for purposes including, but not limited to, penetration
+      testing, COMSEC monitoring, network operations and defense,
+      personnel misconduct (PM), law enforcement (LE),and
+      counterintelligence (CI) investigations.
+
+      - At any time, the USG may inspect and seize data stored on this
+      IS.
+
+      - Communications using, or data stored on, this IS are not
+      private, are subject to routine monitoring, interception, an
+      search, and may be disclosed or used for any ISG authorized
+      purpose.
+
+      - This IS includes security measures (e.g., authentication and
+      access controls) to protect USG interests--not for your personal
+      benefit or privacy.
+
+      - Notwithstanding the above, using this IS does not constitute
+      consent to PM, LE or CI investigative searching or monitoring of
+      the content of privileged communication, or work product,
+      related to personal representations or services by attorneys,
+      psychotherapists, or clergy, and their assistants.  Such
+      communications and work product are private and confidential.
+      See User Agreement for details.
+      You are attempting to log on to $(hostname)
+      20220214162950
+      v.4
+
+      ^
+      !
+      alias exec ispon event manager run ISPON
+      alias exec ispoff event manager run ISPOFF
+      alias exec jdion event manager run JDION
+      alias exec jdioff event manager run JDIOFF
+      alias exec mainon event manager run MAINON
+      alias exec t6on event manager run T6ON
+      !
+      alias exec wr copy system:running-config scp://192.168.252.254/usbflash0:router.cfg
+      alias exec mgmton event manager run MGMTON
+      alias exec mgmtoff event manager run MGMTOFF
+      !
+      line con 0
+      privilege level 15
+      stopbits 1
+      logging synchronous
+      line vty 0 4
+      access-class 1 in vrf-also
+      privilege level 15
+      logging synchronous
+      transport input ssh
+      transport output ssh
+      line vty 5 15
+      access-class 1 in vrf-also
+      privilege level 15
+      logging synchronous
+      transport input ssh
+      transport output ssh
+      !
+      !
+      ntp source BDI10
+      ntp server 172.29.254.1 prefer
+      ntp server 96.47.67.105
+      ntp server 172.21.3.25
+      ntp server 172.21.3.21
+      ntp server 172.29.244.5
+      !
+      !
+      !
+      event manager session cli username "commadmin" privilege 15
+      event manager applet NOSHUT authorization bypass
+      event timer countdown time 60 maxrun 60
+      action 001 cli command "enable"
+      action 002 cli command "configure terminal"
+      action 003 cli command "interface GigabitEthernet1"
+      action 004 cli command "no ip vrf forwarding MGMT"
+      action 005 cli command "zone-member security ISPWAN"
+      action 006 cli command "ip address dhcp"
+      action 007 cli command "interface range GigabitEthernet1-4"
+      action 008 cli command "no shutdown"
+      action 009 cli command "interface range bdi1 - 240"
+      action 010 cli command "no shutdown"
+      action 011 cli command "interface Tunnel3653"
+      action 012 cli command "ip unnumbered BDI100"
+      action 013 cli command "interface Tunnel3753"
+      action 014 cli command "ip unnumbered BDI100"
+      action 015 cli command "exit"
+      action 016 cli command "crypto key generate rsa mod 2048"
+      action 017 cli command "exit"
+      !
+      !
+      !
+      event manager applet ISPON authorization bypass
+      event none maxrun 60
+      action 1.0 cli command "configure terminal"
+      action 2.0 cli command "interface Tunnel60000"
+      action 2.1 cli command "no shutdown"
+      action 3.0 cli command "interface Tunnel70000"
+      action 3.1 cli command "no shutdown"
+      action 4.0 cli command "interface Tunnel3612"
+      action 4.1 cli command "no shutdown"
+      action 5.0 cli command "interface BDI60"
+      action 5.1 cli command "no shutdown"
+      action 6.0 cli command "end"
+      !
+      !
+      !
+      event manager applet ISPOFF authorization bypass
+      event none maxrun 60
+      action 1.0 cli command "configure terminal"
+      action 2.0 cli command "interface Tunnel60000"
+      action 2.1 cli command "shutdown"
+      action 3.0 cli command "interface Tunnel70000"
+      action 3.1 cli command "shutdown"
+      action 4.0 cli command "interface Tunnel3612"
+      action 4.1 cli command "shutdown"
+      action 5.0 cli command "interface BDI60"
+      action 5.1 cli command "shutdown"
+      action 6.0 cli command "end"
+      !
+      !
+      !
+      event manager applet JDION authorization bypass
+      event none maxrun 60
+      action 1.0 cli command "configure terminal"
+      action 2.0 cli command "interface Tunnel3653"
+      action 2.1 cli command "no shutdown"
+      action 3.0 cli command "interface Tunnel3753"
+      action 3.1 cli command "no shutdown"
+      action 4.0 cli command "interface BDI100"
+      action 4.1 cli command "no shutdown"
+      action 5.0 cli command "interface BDI200"
+      action 5.1 cli command "no shutdown"
+      action 6.0 cli command "end"
+      !
+      !
+      !
+      event manager applet JDIOFF authorization bypass
+      event none maxrun 60
+      action 1.0 cli command "configure terminal"
+      action 2.0 cli command "interface Tunnel3653"
+      action 2.1 cli command "shutdown"
+      action 3.0 cli command "interface Tunnel3753"
+      action 3.1 cli command "shutdown"
+      action 4.0 cli command "interface BDI100"
+      action 4.1 cli command "shutdown"
+      action 5.0 cli command "interface BDI200"
+      action 5.1 cli command "shutdown"
+      action 6.0 cli command "end"
+      !
+      !
+      event manager applet MGMTON authorization bypass
+      event none maxrun 60
+      action 1.0 cli command "enable"
+      action 2.0 cli command "configure terminal"
+      action 3.0 cli command "default interface GigabitEthernet1"
+      action 4.0 cli command "interface GigabitEthernet1"
+      action 4.1 cli command "description MGMT - G1"
+      action 4.2 cli command "ip vrf forwarding MGMT"
+      action 4.3 cli command "ip address 10.211.211.1 255.255.255.248"
+      action 4.4 cli command "negotiation auto"
+      action 5.0 cli command "end"
+      !
+      event manager applet MGMTOFF authorization bypass
+      event none maxrun 60
+      action 1.0 cli command "enable"
+      action 2.0 cli command "configure terminal"
+      action 3.0 cli command "default interface GigabitEthernet1"
+      action 4.0 cli command "interface GigabitEthernet1"
+      action 4.1 cli command "description SCPC_PRI"
+      action 4.2 cli command "bandwidth 11000"
+      action 4.3 cli command "ip address dhcp"
+      action 4.4 cli command "zone-member security JBNCT"
+      action 4.5 cli command "delay 4000"
+      action 4.6 cli command "speed 10000"
+      action 4.7 cli command "no negotiation auto"
+      action 5.0 cli command "end"
+      !
+      event manager applet TIMESET authorization bypass
+      event timer countdown time 60 maxrun 60
+      action 001 cli command "enable"
+      action 002 cli command "clock set 01:01:01 SEP 1 2021"
+      action 003 cli command "exit"
+      !
+      !
+      !
+      event manager applet JDI-CAN authorization bypass
+      event syslog pattern ".*EIGRP.*BDI85.*up.*"
+      action 001 regexp ".*Neighbor [0-9]+\.[0-9]+\.([0-9]+)\.([0-9]+).*" "$_syslog_msg" result 3rd 4th
+      action 002 puts "Creating Tunnel998$3rd$4th"
+      action 003 cli command "enable"
+      action 004 cli command "configure terminal"
+      action 005 cli command "interface tunnel998$3rd$4th"
+      action 006 cli command "ip vrf forwarding JDI"
+      action 007 cli command "ip unnumbered BDI100"
+      action 008 cli command "zone-member security JDI"
+      action 009 cli command "tunnel source BDI85"
+      action 010 cli command "tunnel destination 10.138.$3rd.$4th"
+      action 011 cli command "ip mtu 1300"
+      action 012 cli command "ip tcp adjust-mss 1260"
+      action 013 cli command "bandwidth 5000"
+      action 014 cli command "delay 500"
+      action 015 cli command "exit"
+      action 016 cli command "router eigrp PVT_NET"
+      action 017 cli command "address-family ipv4 unicast vrf JDI autonomous-system 5"
+      action 018 cli command "af-interface tunnel998$3rd$4th"
+      action 019 cli command "no passive"
+      action 020 cli command "exit"
+      action 021 cli command "exit"
+      !
+      !
+      !
+      event manager applet T6ON authorization bypass
+      event none maxrun 60
+      action 1.0 cli command "configure terminal"
+      action 2.0 cli command "interface Tunnel4968"
+      action 2.1 cli command "no shutdown"
+      action 3.0 cli command "interface Tunnel19697"
+      action 3.1 cli command "no shutdown"
+      action 4.0 cli command "interface Tunnel31"
+      action 4.1 cli command "shutdown"
+      action 5.0 cli command "interface Tunnel35"
+      action 5.1 cli command "shutdown"
+      action 6.0 cli command "interface Tunnel321"
+      action 6.1 cli command "shutdown"
+      action 7.0 cli command "interface Tunnel325"
+      action 7.1 cli command "shutdown"
+      action 8.0 cli command "interface Tunnel369"
+      action 8.1 cli command "shutdown"
+      action 9.0 cli command "end"
+      !
+      !
+      !
+      event manager applet MAINON authorization bypass
+      event none maxrun 60
+      action 1.0 cli command "configure terminal"
+      action 2.0 cli command "interface Tunnel31"
+      action 2.1 cli command "no shutdown"
+      action 3.0 cli command "interface Tunnel35"
+      action 3.1 cli command "no shutdown"
+      action 4.0 cli command "interface Tunnel321"
+      action 4.1 cli command "no shutdown"
+      action 5.0 cli command "interface Tunnel325"
+      action 5.1 cli command "no shutdown"
+      action 6.0 cli command "interface Tunnel369"
+      action 6.1 cli command "no shutdown"
+      action 7.0 cli command "interface Tunnel4968"
+      action 7.1 cli command "shutdown"
+      action 8.0 cli command "interface Tunnel19697"
+      action 8.1 cli command "shutdown"
+      action 9.0 cli command "end"
+      !
+      !
+      !
+      !
+      event manager applet PURGE authorization bypass
+      event timer countdown time 5 maxrun 60
+      action 001   cli command "configure terminal"
+      action 002   cli command "interface BDI85"
+      action 003   cli command "shut"
+      action 004   cli command "do show ip interface brief | inc 998"
+      action 005   set tun "0"
+      action 006   foreach line "$_cli_result" "[\n\r]+"
+      action 007    regexp "^(Tunnel998[0-9]+).*" "$line" result tun
+      action 008    if $tun ne "0"
+      action 009     cli command "no interface $tun"
+      action 010     set tun "0"
+      action 011    end
+      action 012   end
+      action 012.1 cli command "interface GigabitEthernet1"
+      action 012.2 cli command "shutdown"
+      action 012.3 cli command "no ip route 172.29.0.0 255.255.0.0 GigabitEthernet1 dhcp 175"
+      action 012.4 cli command "no ip route vrf ISP 0.0.0.0 0.0.0.0 GigabitEthernet1 dhcp 5"
+      action 012.5 cli command "no ip route 0.0.0.0 0.0.0.0 GigabitEthernet1 dhcp"
+      action 012.6 cli command "interface GigabitEthernet1"
+      action 012.7 cli command "no shutdown"
+      action 013   cli command "file prompt quiet"
+      action 014   cli command "do copy running-config tftp://192.168.252.254/router.cfg"
+      action 015   cli command "file prompt alert"
+      action 016   cli command "interface GigabitEthernet1"
+      action 017   cli command "no shut"
+      action 018   cli command "exit"
+      action 019   cli command "exit"
+      !
+      !
+      !
+      event manager applet license authorization bypass
+      event timer countdown time 5 maxrun 60
+      action 001 cli command "license smart reservation install file 9G0A24NJG10.txt"
+      action 002 cli command "configure terminal"
+      action 003 cli command "platform hardware throughput level MB 500"
+      action 004 cli command "exit"
+
+      !
+        end
+    image_definition: csr1000v-170302
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+links:
+  - id: l0
+    i1: i0
+    n1: n0
+    i2: i1
+    n2: n1
+  - id: l1
+    i1: i2
+    n1: n2
+    i2: i2
+    n2: n1
+  - id: l2
+    i1: i3
+    n1: n1
+    i2: i3
+    n2: n4
+  - id: l3
+    i1: i1
+    n1: n3
+    i2: i4
+    n2: n1
+

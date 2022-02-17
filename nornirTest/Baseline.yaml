@@ -18,8 +18,8 @@ nodes:
         label: port
         type: physical
   - id: n1
-    label: iosv-0
-    node_definition: iosv
+    label: Test-csr1000v
+    node_definition: csr1000v
     x: -550
     y: -100
     configuration: |-
